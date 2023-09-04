@@ -1,17 +1,16 @@
 import {model, Schema, Document} from 'mongoose'
-import { IProduct } from './product.js';
-import { IUser } from './user.js';
+import { IProduct } from './Product.js';
+import { IUser } from './User.js';
 
 export interface ISaleProduct extends Document{
     product: IProduct,
-    amount: number,
-    salePrice: number,
+    quantity: number,
+    price: number,
 }
 
 export interface ISale extends Document{
     products: ISaleProduct[];
     user: IUser,
-    addres: string;
     totalPrice: number;
     date?: Date;
     state?: string;
@@ -19,24 +18,22 @@ export interface ISale extends Document{
 
 const SaleSchema = new Schema<ISale>({
     products: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Product',
-        amount: {
-            type: String,
-            required: true,
-        },
-        salePrice: {
-            type: Number,
-            required: true,
-        },
+            product: {
+                type: Schema.Types.ObjectId,
+                ref: 'Product',
+            },
+            quantity: {
+                type: Number,
+                required: true,
+            },
+            price: {
+                type: Number,
+                required: true,
+            },
     }],
     user: {
         type: Schema.Types.ObjectId,
         ref: 'User',
-    },
-    addres: {
-        type: String,
-        required: false,
     },
     totalPrice: {
         type: Number,

@@ -1,5 +1,5 @@
-import {model, Schema, Document} from 'mongoose'
-import { ICategory } from './category.js';
+import {model, Schema, Document, Types} from 'mongoose'
+import { ICategory } from './Category.js';
 
 export interface IProduct extends Document{
     title: string;

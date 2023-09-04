@@ -1,8 +1,10 @@
 import mongoose from 'mongoose'
+import dotenv from "dotenv-flow"
 
-const MONGO_URL = process.env.MONGO_URI
+dotenv.config();
 
-mongoose.connect(MONGO_URL)
+
+mongoose.connect(`${process.env.MONGO_URI}`)
 
 const db =  mongoose.connection
 
