@@ -44,11 +44,12 @@ const sanitizeUserInput = (req: Request, res: Response, next: NextFunction) =>{
     if (!req.body.email || !req.body.password || !req.body.name) {
         return res.status(400).json({ message: "Datos incompletos" });
       }
-      if(req.body.name < MIN_USER_NAME || req.body.name > MAX_USER_NAME){
-        return res.status(400).json({ message: `El nombre debe contener entre ${MIN_USER_EMAIL} y ${MAX_USER_EMAIL}` });
+      if(req.body.name.length <= MIN_USER_NAME || req.body.name.length >= MAX_USER_NAME){
+        return res.status(400).json({ message: `El nombre debe contener entre ${MIN_USER_EMAIL} y ${MAX_USER_EMAIL} caracteres` });
       }
-      if(req.body.email < MIN_USER_EMAIL || req.body.email > MIN_USER_EMAIL){
-        return res.status(400).json({ message: `El EMAIL debe contener entre ${MIN_USER_EMAIL} y ${MAX_USER_EMAIL}` });
+
+      if(req.body.email.length <= MIN_USER_EMAIL || req.body.email.length >= MAX_USER_EMAIL){
+        return res.status(400).json({ message: `El email debe contener entre ${MIN_USER_EMAIL} y ${MAX_USER_EMAIL} caracteres` });
       }
 
     req.body.user = {

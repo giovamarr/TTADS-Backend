@@ -21,7 +21,7 @@ export const addSale = async (
     return res.status(201).json(newSale);
   }catch(err){
     console.log(err)
-    return res.status(500).json({message: "Error"});
+    return res.status(500).json({ message: "Ha ocurrido un error" });
   }
 };
 
@@ -29,19 +29,27 @@ export const getAllSales = async (
   _: Request,
   res: Response
 ): Promise<Response> => {
-
-  const sales = await Sale.find({ }).populate('user');
-  return res.status(200).json(sales);
+  try{
+    const sales = await Sale.find({ }).populate('user');
+    return res.status(200).json(sales);
+  }catch(err){
+    console.log(err)
+    return res.status(500).json({ message: "Ha ocurrido un error" });
+  }
 };
 
 export const getSalesByUser = async (
     req: Request,
     res: Response
   ): Promise<Response> => {  
-    
-    const sales = await Sale.find({user: req.body.user.id }).sort({ date: 'desc'}).populate({path: 'products', populate: { path: 'product' }})
-                                  .populate({path: 'products', populate: { path: 'product', populate:{ path: 'category'} }})
-    return res.status(200).json(sales);
+    try{
+      const sales = await Sale.find({user: req.body.user.id }).sort({ date: 'desc'}).populate({path: 'products', populate: { path: 'product' }})
+                                    .populate({path: 'products', populate: { path: 'product', populate:{ path: 'category'} }})
+      return res.status(200).json(sales);
+    }catch(err){
+      console.log(err)
+      return res.status(500).json({ message: "Ha ocurrido un error" });
+    }
   
   };
 
@@ -49,12 +57,17 @@ export const getSalesByProduct = async (
     req: Request,
     res: Response
   ): Promise<Response> => {
-    if (!req.params.id) {
-        return res.status(400).json({ message: "Enviar Id de la categoria" });
-      }
-  
-    const sales = await Sale.find({user: req.params.user });
-    return res.status(200).json(sales);
+    try{
+      if (!req.params.id) {
+          return res.status(400).json({ message: "Enviar Id de la categoria" });
+        }
+    
+      const sales = await Sale.find({user: req.params.user });
+      return res.status(200).json(sales);
+    }catch(err){
+      console.log(err)
+      return res.status(500).json({ message: "Ha ocurrido un error" });
+    }
   
   };
 
@@ -62,53 +75,65 @@ export const getOneSale = async (
     req: Request,
     res: Response
   ): Promise<Response> => {
-
-    if (!req.params.id) {
-      return res.status(400).json({ message: "Enviar Id de la venta" });
+    try{
+      if (!req.params.id) {
+        return res.status(400).json({ message: "Enviar Id de la venta" });
+      }
+  
+      const sale = await Sale.findOne({ _id: req.params.id });
+  
+      if (!sale) {
+        return res.status(400).json({ message: "No se la venta" });
+      }
+  
+      return res.status(200).json(sale);
+    }catch(err){
+      console.log(err)
+      return res.status(500).json({ message: "Ha ocurrido un error" });
     }
-
-    const sale = await Sale.findOne({ _id: req.params.id });
-
-    if (!sale) {
-      return res.status(400).json({ message: "No se la venta" });
-    }
-
-    return res.status(200).json(sale);
 };
 
 export const editSale = async (
     req: Request,
     res: Response
   ): Promise<Response> => {
-
-    if (!req.params.id ) {
-      return res.status(400).json({ message: "No se envio la venta." });
+    try{
+      if (!req.params.id ) {
+        return res.status(400).json({ message: "No se envio la venta." });
+      }
+      const sale = await Sale.findOne({ _id: req.params.id });
+      if (!sale) {
+        return res.status(404).json({ message: "No se encontro la venta" });
+      }
+      
+      const updatedSale = await Sale.updateOne({_id : req.params.id},
+                          {$set: {title: req.body.title, image: req.body.image, category: req.body.category}})
+      return res.status(200).json(updatedSale);
+    }catch(err){
+      console.log(err)
+      return res.status(500).json({ message: "Ha ocurrido un error" });
     }
-    const sale = await Sale.findOne({ _id: req.params.id });
-    if (!sale) {
-      return res.status(404).json({ message: "No se encontro la venta" });
-    }
-    
-    const updatedSale = await Sale.updateOne({_id : req.params.id},
-                        {$set: {title: req.body.title, image: req.body.image, category: req.body.category}})
-    return res.status(200).json(updatedSale);
 };
 
 export const deleteSale= async (
     req: Request,
     res: Response
   ): Promise<Response> => {
-
-    if (!req.params.id) {
-      return res.status(400).json({ message: "Enviar Id del producto." });
+    try{
+      if (!req.params.id) {
+        return res.status(400).json({ message: "Enviar Id del producto." });
+      }
+  
+      const sale = await Sale.findOne({ _id: req.params.id });
+  
+      if (!sale) {
+        return res.status(400).json({ message: "No se encontro la venta" });
+      }
+      
+      const deletedSale = await Sale.deleteOne({_id : req.params.id})
+      return res.status(200).json(deletedSale);
+    }catch(err){
+      console.log(err)
+      return res.status(500).json({ message: "Ha ocurrido un error" });
     }
-
-    const sale = await Sale.findOne({ _id: req.params.id });
-
-    if (!sale) {
-      return res.status(400).json({ message: "No se encontro la venta" });
-    }
-    
-    const deletedSale = await Sale.deleteOne({_id : req.params.id})
-    return res.status(200).json(deletedSale);
 };
