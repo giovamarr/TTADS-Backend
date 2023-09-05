@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import User from '../models/User.js';
+import User from '../models/user.js';
 import { createToken } from '../jwt.handle.js';
 
 export const register = async (

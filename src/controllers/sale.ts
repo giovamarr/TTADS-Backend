@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
-import Sale, {ISale, ISaleProduct } from '../models/Sale.js';
-import User from '../models/User.js';
+import Sale, {ISale, ISaleProduct } from '../models/sale.js';
 
 export const addSale = async (
   req: Request,
