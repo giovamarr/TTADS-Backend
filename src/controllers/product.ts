@@ -85,7 +85,7 @@ export const editProduct = async (
     }
 
     const updatedProduct = await Product.updateOne({_id : req.params.id},
-                        {$set: {title: productEdit.title, image: productEdit.image, category: productEdit.category, price: productEdit.price}})
+                        {$set: {title: productEdit.title, image: productEdit.image, category: productEdit.category, price: productEdit.price, description: productEdit.description}})
     return res.status(200).json(updatedProduct);
 };
 

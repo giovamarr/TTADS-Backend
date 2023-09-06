@@ -21,8 +21,8 @@ const sanitizeProductInput = (req: Request, res: Response, next: NextFunction) =
     if (!req.body.title || req.body.title.length < MIN_PRODUCT_TITLE || req.body.title.length > MAX_PRODUCT_TITLE) {
         return res.status(400).json({ message: "Titulo invalido" });
       }
-    if (req.body.description.length > MAX_DESCRIPTION){
-        return res.status(400).json({ message: "Descripcion muy larga" });
+    if (!req.body.description || req.body.description.length > MAX_DESCRIPTION){
+        return res.status(400).json({ message: "Descripcion invalida" });
     }
 
     req.body.product = {
