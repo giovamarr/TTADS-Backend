@@ -1,6 +1,6 @@
 import {model, Schema, Document} from 'mongoose'
-import { IProduct } from './Product.js';
-import { IUser } from './User.js';
+import { IProduct } from './product.js';
+import { IUser } from './user.js';
 
 export interface ISaleProduct extends Document{
     product: IProduct,
